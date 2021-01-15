@@ -7,9 +7,7 @@ import org.apache.commons.csv.CSVRecord;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by LaunchCode
@@ -50,19 +48,19 @@ public class JobData {
 
         // load data, if not already loaded
         loadData();
-
-        return allJobs;
+        ArrayList<HashMap<String, String>> allJobsCopy =  (ArrayList<HashMap<String, String>>) allJobs.clone();
+        return allJobsCopy;
     }
 
     /**
      * Returns results of search the jobs data by key/value, using
      * inclusion of the search term.
-     *
+     * <p>
      * For example, searching for employer "Enterprise" will include results
      * with "Enterprise Holdings, Inc".
      *
-     * @param column   Column that should be searched.
-     * @param value Value of teh field to search for
+     * @param column Column that should be searched.
+     * @param value  Value of teh field to search for
      * @return List of all jobs matching the criteria
      */
     public static ArrayList<HashMap<String, String>> findByColumnAndValue(String column, String value) {
@@ -125,4 +123,23 @@ public class JobData {
         }
     }
 
+    //FindbyValue method.
+
+    public static ArrayList<HashMap<String, String>> findByValue(String value) {
+        // load data, if not already loaded
+        loadData();
+        ArrayList<HashMap<String, String>> findjobs = new ArrayList<>();
+        for (HashMap<String, String> row : allJobs) {
+
+            //row.forEach((k, v) -> aValue = v;
+            for (Map.Entry<String, String> aValue : row.entrySet()) {
+                if (aValue.getValue().toLowerCase().contains(value.toLowerCase())) {
+                    findjobs.add(row);
+                    break;
+                }
+            }
+
+        }
+       return findjobs;
+    }
 }
